@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import "./layout.css";
 import Footer from "./components/shared/footer";
 import Navbar from "./components/shared/navbar";
+import JobBoard from "./pages/jobBoard/jobBoard";
 const Dashboard = lazy(() => import("./pages/dashboard"));
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Suspense fallback={<div />}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/board" element={<JobBoard />} />
           </Routes>
         </Suspense>
       </main>

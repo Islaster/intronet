@@ -1,16 +1,29 @@
 import { useState } from "react";
+import "./jobBoard.css";
 
 export default function JobBoard() {
   const [inputTog, setInputTog] = useState(false);
   const [jobs, setJobs] = useState([]);
   function buttonToInput() {
-    setInputTog(!inputTog);
+    setInputTog((v) => !v);
   }
   function renderInput() {
     if (inputTog) {
-      return <input type="file" name="resume" id="resume" />;
+      return (
+        <>
+          <input type="file" name="resume" id="resume" />
+          <span>
+            <button type="submit" onClick={() => setInputTog(false)}>
+              filter
+            </button>
+            <button className="cancel" onClick={() => setInputTog(false)}>
+              cancel
+            </button>
+          </span>
+        </>
+      );
     } else {
-      return <button onClick={() => buttonToInput}>Search by resume</button>;
+      return <button onClick={() => buttonToInput()}>Search by resume</button>;
     }
   }
   //add google search api on the backend
