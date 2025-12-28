@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./jobBoard.css";
+import "./style.css";
 
 export default function JobBoard() {
   const [inputTog, setInputTog] = useState(false);
