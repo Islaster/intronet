@@ -1,9 +1,11 @@
-/* Make the jobboard layout full-width (NOT centered) */
-.page .content:has(> form) {
+/* =========================
+   JOB BOARD GRID LAYOUT
+   ========================= */
+
+.jobboard {
   width: 100%;
-  max-width: none !important;
-  margin: 0 !important;
-  padding: 18px 16px 40px 0 !important; /* no left padding so sidebar can hug edge */
+  margin: 0;
+  padding: 18px 16px 40px 0;
 
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
@@ -11,18 +13,17 @@
   align-items: start;
 }
 
-/* Sidebar: stick to the true left, not the centered container */
-.page .content:has(> form) > form {
+/* Sidebar (left column) */
+.jobboard > form {
   grid-column: 1;
   grid-row: 1;
 
-  margin: 0 !important;
-  border-radius: 0 12px 12px 0; /* optional: looks “docked” to the left */
-  border-left: none; /* optional */
+  margin: 0;
 
-  /* sidebar look */
   background: rgba(0, 0, 0, 0.02);
   border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
   padding: 16px;
 
   display: flex;
@@ -30,40 +31,61 @@
   gap: 10px;
 
   position: sticky;
-  top: 72px; /* adjust to your nav height */
+  top: 72px;
   max-height: calc(100vh - 92px);
   overflow: auto;
 }
 
-/* Keep resume controls in the left column and flush with sidebar */
-.page .content:has(> form) > button,
-.page .content:has(> form) > input[type="file"] {
+/* The "Search by resume" button (when inputTog is false) */
+.jobboard > button {
   grid-column: 1;
-  margin: 0 !important;
   width: 100%;
-  border-radius: 0 10px 10px 0; /* optional: docked look */
+  margin: 0;
+  border-radius: 0 10px 10px 0;
 }
 
-/* Give the right column its own padding so content doesn’t start at edge */
-.page .content:has(> form) > ul,
-.page .content:has(> form) > div {
+/* When inputTog is true, these are siblings too */
+.jobboard > #resume,
+.jobboard > span {
+  grid-column: 1;
+  width: 100%;
+  margin: 0;
+}
+
+/* =========================
+     JOBS SECTION (right column)
+     ========================= */
+
+.jobboard > .jobsSection {
   grid-column: 2;
   grid-row: 1 / -1;
-  margin: 0 !important;
-  padding-right: 16px;
+
+  /* give the right side height so Y-centering can work */
+  min-height: calc(100vh - 120px); /* adjust 120px if needed */
+  padding: 16px;
+  box-sizing: border-box;
+
+  display: grid;
+
+  /* default: list content starts at the top, but stays centered on X */
+  align-content: start;
+  justify-items: center;
 }
 
-/* Results list stays full in the right column */
-.page .content:has(> form) > ul {
+/* List view: centered on X, top on Y */
+.jobboard > .jobsSection > ul {
+  width: min(100%, 980px);
+  margin: 0;
+  padding: 0;
   list-style: none;
-  padding-left: 0;
+
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* Job card look */
-.page .content:has(> form) > ul > li {
+/* Cards */
+.jobboard > .jobsSection > ul > li {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
@@ -71,33 +93,19 @@
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
 }
 
-/* Mobile: stack */
-@media (max-width: 920px) {
-  .page .content:has(> form) {
-    grid-template-columns: 1fr;
-    padding-left: 16px !important;
-  }
+/* EMPTY STATE: centered on BOTH X + Y */
+.jobboard > .jobsSection > .no-jobs {
+  place-self: center; /* centers X and Y inside jobsSection */
+  text-align: center;
 
-  .page .content:has(> form) > form,
-  .page .content:has(> form) > button,
-  .page .content:has(> form) > input[type="file"] {
-    border-radius: 12px;
-    border-left: 1px solid rgba(0, 0, 0, 0.08);
-    position: static;
-    max-height: none;
-  }
-
-  .page .content:has(> form) > ul,
-  .page .content:has(> form) > div {
-    grid-column: 1;
-    grid-row: auto;
-    padding-right: 0;
-  }
+  width: min(100%, 980px);
+  margin: 0;
 }
 
-/* ===== Resume input row (renderInput) ===== */
+/* =========================
+     RESUME INPUT ROW
+     ========================= */
 
-/* file input */
 #resume {
   width: 95%;
   padding: 10px 12px;
@@ -107,7 +115,6 @@
   font-size: 14px;
 }
 
-/* wrapper for the two buttons */
 #resume + span {
   display: flex;
   gap: 10px;
@@ -116,7 +123,6 @@
   margin-top: 10px;
 }
 
-/* make both buttons look consistent */
 #resume + span button {
   padding: 10px 12px;
   border-radius: 10px;
@@ -130,7 +136,6 @@
   transform: translateY(1px);
 }
 
-/* primary submit/filter */
 #resume + span button[type="submit"] {
   background: rgba(0, 0, 0, 0.92);
   color: #fff;
@@ -141,7 +146,6 @@
   background: rgba(0, 0, 0, 0.98);
 }
 
-/* cancel button */
 #resume + span .cancel {
   background: rgba(0, 0, 0, 0.03);
   color: rgba(0, 0, 0, 0.84);
@@ -149,4 +153,36 @@
 
 #resume + span .cancel:hover {
   background: rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+     MOBILE
+     ========================= */
+
+@media (max-width: 920px) {
+  .jobboard {
+    grid-template-columns: 1fr;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .jobboard > form {
+    border-radius: 12px;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+    position: static;
+    max-height: none;
+  }
+
+  .jobboard > .jobsSection {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: auto;
+    padding: 0;
+    justify-items: stretch;
+  }
+
+  .jobboard > .jobsSection > ul,
+  .jobboard > .jobsSection > .no-jobs {
+    width: 100%;
+  }
 }

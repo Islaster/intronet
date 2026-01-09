@@ -28,7 +28,7 @@ export default function JobBoard() {
   }
   //add google search api on the backend
   function renderListOfJobs() {
-    if (jobs) {
+    if (jobs.length > 0) {
       return (
         <ul>
           {jobs.map((job) => (
@@ -38,7 +38,7 @@ export default function JobBoard() {
       );
     } else {
       return (
-        <div>
+        <div className="no-jobs">
           <h2>Jobs not found.</h2>
           <h3>Try less filters.</h3>
         </div>
@@ -46,7 +46,7 @@ export default function JobBoard() {
     }
   }
   return (
-    <>
+    <div className="jobboard">
       <form>
         <label htmlFor="search">Search: </label>
         <input
@@ -72,7 +72,7 @@ export default function JobBoard() {
         <button type="submit">Filter</button>
       </form>
       {renderInput()}
-      {renderListOfJobs()}
-    </>
+      <section className="jobsSection">{renderListOfJobs()}</section>
+    </div>
   );
 }
